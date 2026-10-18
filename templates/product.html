@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% from '_m.html' import card, art with context %}{% block bn %}{% endblock %}{% block b %}
+<div class=det><div><div class=main id=mv>{% if M %}{% set m=M[0] %}{% if m.kind=='video' %}<video src="{{mu(m.f)}}" controls playsinline></video>{% else %}<img src="{{mu(m.f)}}" alt="{{p.name}}">{% endif %}{% else %}<div class=ph style="--h:{{(p.id*47)%360}};aspect-ratio:1">{{art(p.name)}}</div>{% endif %}</div>
+{% if M|length>1 %}<div class=thumbs>{% for m in M %}<div class=tb data-f="{{mu(m.f)}}" data-k="{{m.kind}}">{% if m.kind=='video' %}<svg class=ic><use href="#i-play"/></svg>{% else %}<img src="{{mu(m.f)}}" alt="">{% endif %}</div>{% endfor %}</div>{% endif %}</div>
+<div class=info><small>{{p.brand}}</small><h1 class=pt>{{p.name}}</h1>
+<div><span class=big>₹{{'%g'|format(p.price)}}</span>{% if p.mrp>p.price %} <s>₹{{'%g'|format(p.mrp)}}</s> <span class=bd style="position:static">{{'%g'|format(p.disc)}}% OFF</span><p class=sv>You save ₹{{'%g'|format(p.mrp-p.price)}}</p>{% endif %}</div>
+{% if 0<p.stock<=5 %}<p style="color:#c2325f;font-weight:600">Only {{p.stock}} left in store</p>{% endif %}
+{% if p.sizes %}<div class=szh><b>Select size</b><small>Tap to choose</small></div><div class=pills>{% for s in p.sizes.split(',') %}<button type=button class=sz>{{s.strip()}}</button>{% endfor %}</div>{% endif %}
+{% set nd='data-needs=1' if p.sizes else '' %}
+{% if p.stock>0 %}<div class=qrow><span>Quantity</span><div class=qs2><button type=button data-pq="-1">−</button><b id=pq data-max="{{p.stock}}">1</b><button type=button data-pq="1">+</button></div><small>{{p.stock}} in store</small></div>
+<div class=buy><button type=button class=ghostb data-add="{{p.id}}" data-max="{{p.stock}}" {{nd|safe}}><svg class=ic><use href="#i-cart"/></svg> Add to Bag</button><button type=button data-add="{{p.id}}" data-go=1 data-max="{{p.stock}}" {{nd|safe}}>Reserve Now</button><button type=button class="hrt big2 {{'on' if p.id in W}}" data-wish="{{p.id}}" aria-label=Wishlist><svg class=ic><use href="#i-heart"/></svg></button></div>
+{% else %}<div class=buy><button type=button disabled>Out of stock</button></div>{% endif %}
+<div class=trust><div><svg class=ic><use href="#i-tag"/></svg>Pay 50% or 100% to reserve</div><div><svg class=ic><use href="#i-clock"/></svg>Held for you {{S.hold_days}} days</div><div><svg class=ic><use href="#i-pin"/></svg>Pick up at store · {{S.hours}}</div><div><svg class=ic><use href="#i-truck"/></svg>Home delivery on request (extra charge)</div></div>
+<h4>Details</h4><p>{{p.descr}}</p>{% if p.fabric %}<p><b>Fabric:</b> {{p.fabric}}</p>{% endif %}
+<a class="btn ghost" target=_blank href="https://wa.me/?text={{(p.name~' - Rs '~('%g'|format(p.price))~' at '~S.shop_name)|urlencode}}">Share on WhatsApp</a></div></div>
+{% if R %}<h2 class=sec>You may also like</h2><div class=rail>{% for r in R %}{{card(r)}}{% endfor %}</div>{% endif %}
+<div id=lbw class=lbw><img id=lb alt=""></div>{% endblock %}

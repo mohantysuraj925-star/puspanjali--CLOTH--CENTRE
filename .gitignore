@@ -1,0 +1,6 @@
+shop.db
+.secret
+uploads/
+__pycache__/
+*.pyc
+patch*.py

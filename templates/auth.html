@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% block bn %}{% endblock %}{% block b %}
+<div class=authw><div class=authc><a class=authlogo href="/"><svg class=ic><use href="#logo"/></svg></a>
+<h2 style="margin:6px 0">{{'Create your account' if reg else 'Welcome back'}}</h2><p class=mu>{{'Join to reserve outfits, save favourites and earn a daily reward.' if reg else 'Log in to reserve, track orders and claim your daily reward.'}}</p>
+<div class=seg><a href="/login?next={{request.args.next or ''}}" class="{{'' if reg else 'on'}}">Log in</a><a href="/register?next={{request.args.next or ''}}" class="{{'on' if reg else ''}}">Sign up</a></div>
+<div class=err id=er {{'' if e else 'hidden'}}>{{e}}</div>
+<form id=af method=post action="{{'/register' if reg else '/login'}}"><input type=hidden name=next value="{{request.args.next or ''}}">
+{% if reg %}<label>Full name</label><input name=name autocomplete=name required><label>User ID (no spaces)</label><input name=uid autocapitalize=characters placeholder="e.g. RAHUL123" required><label>Mobile number</label><input name=phone type=tel inputmode=numeric placeholder="10 digits" required><label>Email</label><input name=email type=email required><label>Password</label><div class=pw><input name=pw type=password minlength=6 placeholder="At least 6 characters" required><button type=button class=eye>Show</button></div>
+{% else %}<label>User ID</label><input name=uid autocapitalize=characters autocomplete=username required><label>Password</label><div class=pw><input name=pw type=password autocomplete=current-password required><button type=button class=eye>Show</button></div>{% endif %}
+<button class="btn go" style="width:100%;margin-top:16px">{{'Create account' if reg else 'Log in'}}</button></form>
+{% if not reg %}<p class=mu style="font-size:13px;margin-top:14px">Store owner? Log in here with your admin User ID.</p>{% endif %}</div></div>
+<script>{% if not reg %}window.addEventListener('load',function(){pcLogin(document.getElementById('af'),{{(request.args.next or '')|tojson}})});{% endif %}
+document.querySelectorAll('.eye').forEach(function(b){b.onclick=function(){var i=b.previousElementSibling;i.type=i.type=='password'?'text':'password';b.textContent=i.type=='password'?'Show':'Hide'}})</script>{% endblock %}

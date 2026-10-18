@@ -1,0 +1,10 @@
+{% macro ic(n) %}{% set s=n|lower %}{% if 'lehenga' in s or 'bridal' in s %}i-crown{% elif 'kid' in s or 'frock' in s or 'girl' in s or 'boy' in s %}i-kids{% elif 'shawl' in s or 'dupatta' in s %}i-scarf{% elif 'saree' in s or 'kurti' in s or 'suit' in s or 'anarkali' in s or 'dress' in s %}i-dress{% else %}i-shirt{% endif %}{% endmacro %}
+{% macro art(n) %}<svg class="ic holoic"><use href="#{{ic(n)|trim}}"/></svg>{% endmacro %}
+{% macro card(p) %}<div class=card><a class=pl href="/product/{{p.id}}"><div class=pimg>{% if p.img %}<img loading=lazy decoding=async src="{{mu(p.img)}}" alt="{{p.name}}">{% else %}<div class=ph style="--h:{{(p.id*47)%360}}">{{art(p.name)}}</div>{% endif %}{% if p.disc>0 %}<span class=bd>{{'%g'|format(p.disc)}}% OFF</span>{% endif %}</div></a>
+<button type=button class="hrt {{'on' if p.id in W}}" data-wish="{{p.id}}" aria-label="Wishlist"><svg class=ic><use href="#i-heart"/></svg></button>
+<div class=ci><small>{{p.brand}}</small><h3>{{p.name}}</h3><div class=pr><b>₹{{'%g'|format(p.price)}}</b>{% if p.mrp>p.price %}<s>₹{{'%g'|format(p.mrp)}}</s>{% endif %}</div>
+{% if p.price0 and p.price0>p.price %}<div class=drop>Price dropped ₹{{'%g'|format(p.price0-p.price)}}</div>{% endif %}
+{% if p.stock<=0 %}<button type=button class=ab disabled>Out of stock</button>
+{% elif p.sizes %}<button type=button class=ab data-sizes="{{p.sizes}}" data-pid="{{p.id}}" data-max="{{p.stock}}" data-name="{{p.name}}">Select size</button>
+{% else %}<button type=button class=ab data-add="{{p.id}}" data-max="{{p.stock}}">Add to Bag</button><div class=qs data-q="{{p.id}}" data-max="{{p.stock}}" hidden><button type=button data-dec>−</button><b>1</b><button type=button data-inc>+</button></div>{% endif %}
+{% if 0<p.stock<=3 %}<small class=low>Only {{p.stock}} left</small>{% endif %}</div></div>{% endmacro %}

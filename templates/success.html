@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% block b %}<div class=w style="text-align:center"><div class=okc><svg class=ic><use href="#i-check"/></svg></div><h2>Reserved!</h2><p class=mu>Order #{{o.id}}</p>
+<div class=codebox><small>YOUR PICKUP CODE</small><b>{{o.code}}</b></div><p>Held for you until <b>{{o.hold_until}}</b></p>
+<p>Paid ₹{{'%g'|format(o.paid)}}{% if o.balance>0 %} · Balance ₹{{'%g'|format(o.balance)}} to pay at the store{% endif %}</p>
+<p class=mu>{{S.address}}<br>{{S.hours}}</p><a class="btn gold" href="/account">My orders</a> <a class="btn ghost" href="/">Keep shopping</a></div>{% endblock %}
